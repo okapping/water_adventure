@@ -8,10 +8,10 @@ class Game:
         pyxel.mouse(True)
         pyxel.load("asset.pyxres")
         
-        self.player = None
+        # self.player = None
 
-        self.scroll_x = 0
-        self.scroll_y = 0
+        # self.scroll_x = 0
+        # self.scroll_y = 0
 
         self.scenes = {
             Scene.TITLE: TitleScene(self),

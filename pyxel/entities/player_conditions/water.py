@@ -1,5 +1,6 @@
 import pyxel
 from input_detector import InputDetector as Input
+from collision import *
 
 class Water:
     def __init__(self, game, player):
@@ -25,8 +26,9 @@ class Water:
             elif player.dx < 0:
                 player.dx = min(0, player.dx + 0.5)
 
-
-        if Input.btnp(Input.A) and self.player.is_on_ground():
+        # is_character_colliding
+        # if Input.btnp(Input.A) and (in_collision(player.x, player.y + 17) or in_collision(player.x + 15, player.y + 17)):
+        if Input.btnp(Input.A) and is_on_ground(player.x, player.y):
             self.jumping = True
             player.dy = -8
          
@@ -36,11 +38,13 @@ class Water:
                 self.jumping = False
         else:
             # 落下判定
-            if self.player.is_on_ground():
-                player.dy = 0
-            else:
-                player.dy = min(player.dy+1, 6)
+            # if self.player.is_on_ground():
+            #     player.dy = 0
+            # else:
+            #     player.dy = min(player.dy+1, 6)
+            player.dy = min(player.dy+1, 6)
 
+        # push_back(player.x, player.y)
 
 
     def draw(self):
@@ -50,4 +54,5 @@ class Water:
         i = [0, 1, 2, 1]
         u = pyxel.frame_count // 4 % 4
         u = i[u] * 16
-        pyxel.blt(self.player.x, self.player.y, 0, u, 16, w, 16, 4)
+        pyxel.blt(int(self.player.x), int(self.player.y), 0, u, 16, w, 16, 4)
+        is_on_ground

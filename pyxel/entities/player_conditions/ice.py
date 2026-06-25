@@ -1,5 +1,6 @@
 import pyxel
 from input_detector import InputDetector as Input
+from collision import *
 
 class Ice:
     def __init__(self, game, player):
@@ -7,7 +8,7 @@ class Ice:
         self.player = player
 
         self.jumping = False
-        
+    
     def update(self):
         player = self.player
 
@@ -28,27 +29,21 @@ class Ice:
             elif player.dx < 0:
                 player.dx = min(0, player.dx + 0.05)
 
-        if Input.btnp(Input.A) and self.player.is_on_ground():
+        if Input.btnp(Input.A) and is_on_ground(player.x, player.y):
             self.jumping = True
             player.dy = -6
-         
+        
+        # 進行方向に壁がある場合、dxをゼロにする
+        if is_wall_ahead(player.x, player.y, player.direction):
+            player.dx = 0
+
         if self.jumping:
             player.dy += 1
             if player.dy == 0:
                 self.jumping = False
         else:
             # 落下判定
-            if self.player.is_on_ground():
-                player.dy = 0
-            else:
-                player.dy = min(player.dy+2, 6)
-                # player.dy += 2
-
-        # 落下判定
-        # if self.player.is_on_ground():
-        #     player.dy = 0
-        # else:
-        #     player.dy = 3
+            player.dy = min(player.dy+2, 6)
 
     def draw(self):
         w = 16 if self.player.direction > 0 else -16

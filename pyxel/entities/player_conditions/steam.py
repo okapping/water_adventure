@@ -59,10 +59,12 @@ class Steam:
 
         # effect
         for x, y, size, step in self.smokes:
-            if size >= 4:
+            if 3 < size < 4:
                 pyxel.dither(0.5)
                 pyxel.circ(x, y, size, 7)
                 pyxel.dither(1)
+            elif 4 < size:
+                pyxel.circb(x, y, size, 7)
             else:
                 pyxel.circ(x, y, size, 7)
 
