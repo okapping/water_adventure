@@ -13,6 +13,8 @@ class PlayScene:
         self.scroll_x = 0
         self.scroll_y = 0
 
+        self.cond_index = 64
+
     # プレイ画面を開始する
     def start(self):
         # 変更前のマップに戻す
@@ -30,6 +32,16 @@ class PlayScene:
         # BGMを再生する
         # pyxel.stop()
         # pyxel.playm(1, loop=True)
+
+    def update_cond_index(self):
+        # 80, 64, 48         -1, 0, 1
+        goal_index = 80 - 16 * (self.player.active_cond + 1)
+        # goal_index = 16 * (self.player.active_cond + 1)
+        # goal_index = 16 * (self.player.active_cond + 1)
+        if self.cond_index < goal_index:
+            self.cond_index += 2
+        elif self.cond_index > goal_index:
+            self.cond_index -= 2
 
     def update(self):
         # プレイヤーを更新する
@@ -56,6 +68,7 @@ class PlayScene:
             # スクロールした幅に応じて敵を出現させる
             # self.spawn_enemy(last_screen_x + 128, self.scroll_x + 127)
 
+        self.update_cond_index()
     def draw(self):
         pyxel.cls(12)
         pyxel.text(0, 0, "Scene: play", 6)
@@ -65,6 +78,7 @@ class PlayScene:
 
         pyxel.camera(self.scroll_x, 0)
         self.player.draw()
-
         pyxel.camera()
-        pyxel.blt(pyxel.width - 26, 10, 0, 0, 48, 16, 16, 8)
+
+        # 画面固定情報
+        pyxel.blt(pyxel.width - 26, 10, 0, 0, self.cond_index, 16, 16, 8)

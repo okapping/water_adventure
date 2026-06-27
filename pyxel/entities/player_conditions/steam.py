@@ -6,6 +6,8 @@ class Steam:
         self.game = game
         self.player = player
 
+        # self.starting = 0
+
         # effect
         self.smokes = []
 

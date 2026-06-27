@@ -9,9 +9,11 @@ class Water:
 
         self.jumping = False
 
+        # self.starting = 0
+
     def start(self):
-        # 初期設定
         pass
+        # self.starting = pyxel.frame_count+15
 
     def update(self):
         player = self.player
@@ -59,4 +61,4 @@ class Water:
         u = pyxel.frame_count // 4 % 4
         u = i[u] * 16
         pyxel.blt(int(self.player.x), int(self.player.y), 0, u, 16, w, 16, 4)
-        is_on_ground
+        

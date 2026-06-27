@@ -3,6 +3,8 @@ from input_detector import InputDetector as Input
 from .player_conditions import Ice, Steam, Water
 from collision import *
 
+pattern = [0,1,0,2]
+
 # プレイヤークラス
 class Player:
     # プレイヤーを初期化する
@@ -14,7 +16,7 @@ class Player:
         self.dx = 0  # X軸方向の移動距離
         self.dy = 0  # Y軸方向の移動距離
         self.direction = 1  # 左右の移動方向
-        self.jump_counter = 0  # ジャンプ時間
+        # self.jump_counter = 0  # ジャンプ時間
 
         self.conditions = [
             Ice(self.game, self),
@@ -23,6 +25,9 @@ class Player:
         ]
         # self.active_cond = 0 # 0=水, 1=氷, 2=水, 3=水蒸気
         self.active_cond = 0 # -1=氷, 0=水, 2=水蒸気
+        self.changing_smokes = [] # 切り替え時のもくもく
+        self.starting = 0 # 切り替え中のフレーム数
+
 
         self.test = 0
 
@@ -58,14 +63,33 @@ class Player:
                 
 
         # return x, y
+    def update_effect(self):
+        if pyxel.frame_count < self.starting:
+            self.changing_smokes.append(
+                (
+                    pyxel.rndi(-2, 17),# x座標（相対位置）
+                    pyxel.rndi(3, 18),# y座標（相対位置）
+                    1, # サイズ
+                )
+            )
+        for i, (x, y, size) in enumerate(self.changing_smokes):
+            y -= 1
+            size += 0.5
+            self.changing_smokes[i] = (x, y, size)
+
+        self.changing_smokes = [ smoke for smoke in self.changing_smokes if smoke[2] < 6]
+
+        
     def update(self):
 
         # キャラ入れ替え
         if Input.btnp(Input.Y) and -1 < self.active_cond:
             self.active_cond -= 1
+            self.starting = pyxel.frame_count + 15
             self.conditions[self.active_cond+1].start()
         if Input.btnp(Input.X) and self.active_cond < 1:
             self.active_cond += 1
+            self.starting = pyxel.frame_count + 15
             self.conditions[self.active_cond+1].start()
         self.conditions[self.active_cond+1].update()
         # if Input.btnp(Input.Y):
@@ -87,6 +111,8 @@ class Player:
 
         # self.dx = 0
         # self.dy = 0
+        self.update_effect()
+
         if pyxel.btn(pyxel.KEY_0):
             self.test += 0.1
 
@@ -118,6 +144,22 @@ class Player:
         # i = pattern[self.active_cond % 4]
         # self.conditions[i].draw()
         self.conditions[self.active_cond+1].draw()
+        
+        # 能力切り替え時のアニメーション
+        for x, y, size in self.changing_smokes:
+            pyxel.circ(self.x+x, self.y+y, size, 7)
+            # if 3 < size < 4:
+            #     pyxel.dither(0.5)
+            #     pyxel.circ(x, y, size, 7)
+            #     pyxel.dither(1)
+            # elif 4 < size:
+            #     pyxel.circb(x, y, size, 7)
+            # else:
+            #     pyxel.circ(x, y, size, 7)
+
+        # if pyxel.frame_count < self.starting:
+            # pyxel.rect(self.x, self.y, 16, 16, 7)
+
 
         pyxel.text(self.x, self.y-50,f"in_collision: {in_collision(self.x, self.y+16)}",0)
         pyxel.text(self.x, self.y-40,f"is_wall_ahead: {is_wall_ahead(self.x, self.y, self.direction)}",0)

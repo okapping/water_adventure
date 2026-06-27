@@ -8,9 +8,9 @@ class Ice:
         self.player = player
 
         self.jumping = False
+        # self.starting = 0
     
     def start(self):
-        # 初期設定
         pass
 
     def update(self):
