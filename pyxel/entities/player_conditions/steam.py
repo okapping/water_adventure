@@ -9,6 +9,11 @@ class Steam:
         # effect
         self.smokes = []
 
+    def start(self):
+        # 初期設定
+        self.smokes = []
+        self.player.dy = 0
+
     def update_effect(self):
         if pyxel.frame_count % 2 == 0:
             x = pyxel.rndi(int(self.player.x)-2, int(self.player.x)+18)

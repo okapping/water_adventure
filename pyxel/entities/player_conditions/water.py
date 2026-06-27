@@ -9,6 +9,10 @@ class Water:
 
         self.jumping = False
 
+    def start(self):
+        # 初期設定
+        pass
+
     def update(self):
         player = self.player
 

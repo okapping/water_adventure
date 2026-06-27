@@ -65,4 +65,6 @@ class PlayScene:
 
         pyxel.camera(self.scroll_x, 0)
         self.player.draw()
+
         pyxel.camera()
+        pyxel.blt(pyxel.width - 26, 10, 0, 0, 48, 16, 16, 8)

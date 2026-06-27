@@ -30,23 +30,27 @@ class InputDetector():
   ]
 
   A = [
+    pyxel.KEY_L,
     pyxel.KEY_SPACE,
     pyxel.KEY_RETURN,
     pyxel.GAMEPAD1_BUTTON_A
   ]
 
   B = [
+    pyxel.KEY_K,
     pyxel.KEY_ESCAPE,
     pyxel.KEY_BACKSPACE,
     pyxel.GAMEPAD1_BUTTON_B
   ]
 
   X = [
+    pyxel.KEY_I,
     pyxel.KEY_X,
     pyxel.GAMEPAD1_BUTTON_X
   ]
   
   Y = [
+    pyxel.KEY_J,
     pyxel.KEY_Y,
     pyxel.GAMEPAD1_BUTTON_Y
   ]

@@ -17,9 +17,12 @@ class Player:
         self.jump_counter = 0  # ジャンプ時間
 
         self.conditions = [
-            Water(self.game, self), Ice(self.game, self), Steam(self.game, self)
+            Ice(self.game, self),
+            Water(self.game, self),
+            Steam(self.game, self)
         ]
-        self.active_cond = 0 # 0=水, 1=氷, 2=水, 3=水蒸気
+        # self.active_cond = 0 # 0=水, 1=氷, 2=水, 3=水蒸気
+        self.active_cond = 0 # -1=氷, 0=水, 2=水蒸気
 
         self.test = 0
 
@@ -58,11 +61,18 @@ class Player:
     def update(self):
 
         # キャラ入れ替え
-        if Input.btnp(Input.Y):
+        if Input.btnp(Input.Y) and -1 < self.active_cond:
+            self.active_cond -= 1
+            self.conditions[self.active_cond+1].start()
+        if Input.btnp(Input.X) and self.active_cond < 1:
             self.active_cond += 1
-        pattern = [0,1,0,2]
-        i = pattern[self.active_cond % 4]
-        self.conditions[i].update()
+            self.conditions[self.active_cond+1].start()
+        self.conditions[self.active_cond+1].update()
+        # if Input.btnp(Input.Y):
+        #     self.active_cond += 1
+        # pattern = [0,1,0,2]
+        # i = pattern[self.active_cond % 4]
+        # self.conditions[i].update()
 
         # 行動の反映
         # self.x = max(0, self.x + self.dx)
@@ -80,36 +90,35 @@ class Player:
         if pyxel.btn(pyxel.KEY_0):
             self.test += 0.1
 
-    def draw_character(self):
-        """キャラクターを描画する
-        """
+    # def draw_character(self):
+    #     """キャラクターを描画する
+    #     """
 
-        # キャラクターの向きによって画像の向きを変える
-        w = 16 if self.direction > 0 else -16
-        if self.condition in [0, 2]:
-            # 画像の参照X座標を決める
-            i = [0, 1, 2, 1]
-            u = pyxel.frame_count // 4 % 4
-            u = i[u] * 16
-            pyxel.blt(self.x, self.y, 0, u, 16, w, 16, 4)
+    #     # キャラクターの向きによって画像の向きを変える
+    #     w = 16 if self.direction > 0 else -16
+    #     if self.condition in [0, 2]:
+    #         # 画像の参照X座標を決める
+    #         i = [0, 1, 2, 1]
+    #         u = pyxel.frame_count // 4 % 4
+    #         u = i[u] * 16
+    #         pyxel.blt(self.x, self.y, 0, u, 16, w, 16, 4)
 
-            self.water_effect()
-        elif self.condition == 1:
-            pyxel.blt(self.x, self.y, 0, 0, 32, w, 16, 4)
-            self.ice_effect()
-        elif self.condition == 3:
-            u = pyxel.frame_count // 2 % 2 * 16 + 16
-            pyxel.blt(self.x, self.y, 0, u, 32, w, 16, 4)
-            self.steam_effect()
+    #         self.water_effect()
+    #     elif self.condition == 1:
+    #         pyxel.blt(self.x, self.y, 0, 0, 32, w, 16, 4)
+    #         self.ice_effect()
+    #     elif self.condition == 3:
+    #         u = pyxel.frame_count // 2 % 2 * 16 + 16
+    #         pyxel.blt(self.x, self.y, 0, u, 32, w, 16, 4)
+    #         self.steam_effect()
 
     def draw(self):
-        pass
-        # self.draw_character()
         # キャラのindexを計算
-        pattern = [0,1,0,2]
-        i = pattern[self.active_cond % 4]
-        self.conditions[i].draw()
-        
+        # pattern = [0,1,0,2]
+        # i = pattern[self.active_cond % 4]
+        # self.conditions[i].draw()
+        self.conditions[self.active_cond+1].draw()
+
         pyxel.text(self.x, self.y-50,f"in_collision: {in_collision(self.x, self.y+16)}",0)
         pyxel.text(self.x, self.y-40,f"is_wall_ahead: {is_wall_ahead(self.x, self.y, self.direction)}",0)
         pyxel.text(self.x, self.y-30,f"is_on_ground: {is_on_ground(self.x, self.y)}",0)
