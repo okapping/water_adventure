@@ -166,7 +166,7 @@ class Player:
         pyxel.text(self.x, self.y-30,f"is_on_ground: {is_on_ground(self.x, self.y)}",0)
         pyxel.text(self.x, self.y-20,f"dx: {self.dx}, dy: {self.dy}",0)
         pyxel.text(self.x, self.y-10,f"x: {self.x}, y: {self.y}",0)
-        pyxel.rectb(self.x, self.y, 16, 16, 10)
+        # pyxel.rectb(self.x, self.y, 16, 16, 10)
 
         # pyxel.rectb(30, 30, 16, 16, 10)
         # pyxel.pset(30, 30+self.test, 8) 

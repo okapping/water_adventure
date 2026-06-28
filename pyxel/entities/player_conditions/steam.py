@@ -9,11 +9,11 @@ class Steam:
         # self.starting = 0
 
         # effect
-        self.smokes = []
+        self.moving_smokes = []
 
     def start(self):
         # 初期設定
-        self.smokes = []
+        self.moving_smokes = []
         self.player.dy = 0
 
     def update_effect(self):
@@ -23,13 +23,13 @@ class Steam:
             size = 1
             # step = pyxel.rndf(0.5, 2)
             step = 0.2
-            self.smokes.append((x, y, size, step))
+            self.moving_smokes.append((x, y, size, step))
         
-        for i, (x, y, size, step) in enumerate(self.smokes):
+        for i, (x, y, size, step) in enumerate(self.moving_smokes):
             size += step
-            self.smokes[i] = (x, y, size, step)
+            self.moving_smokes[i] = (x, y, size, step)
 
-        self.smokes = [ smoke for smoke in self.smokes if smoke[2] < 5]
+        self.moving_smokes = [ smoke for smoke in self.moving_smokes if smoke[2] < 5]
 
     def update(self):
         player = self.player
@@ -65,7 +65,7 @@ class Steam:
     def draw(self):
 
         # effect
-        for x, y, size, step in self.smokes:
+        for x, y, size, step in self.moving_smokes:
             if 3 < size < 4:
                 pyxel.dither(0.5)
                 pyxel.circ(x, y, size, 7)

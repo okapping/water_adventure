@@ -81,4 +81,5 @@ class PlayScene:
         pyxel.camera()
 
         # 画面固定情報
+        pyxel.blt(pyxel.width - 42, 10, 0, 16, 48, 16, 16, 8)
         pyxel.blt(pyxel.width - 26, 10, 0, 0, self.cond_index, 16, 16, 8)
