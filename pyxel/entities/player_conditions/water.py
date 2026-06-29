@@ -55,18 +55,25 @@ class Water:
 
     def draw(self):
 
-        if abs(self.player.dx) >= 1:
-            w = 18 if self.player.direction > 0 else -18
-            x = self.player.x if self.player.direction > 0 else self.player.x-2
-            u = pyxel.frame_count // 3 % 2
-            u = 48 + (24 * u)
-            # 48, 72
-            pyxel.blt(x, self.player.y, 0, u, 16, w, 16, 4)
-        else:
+        if not is_on_ground(self.player.x, self.player.y):
+            # 空中にいる場合
             w = 16 if self.player.direction > 0 else -16
-            # 画像の参照X座標を決める
-            i = [0, 1, 2, 1]
-            u = pyxel.frame_count // 4 % 4
-            u = i[u] * 16
-            pyxel.blt(self.player.x, self.player.y, 0, u, 16, w, 16, 4)
+            pyxel.blt(self.player.x, self.player.y, 0, 96, 16, w, 16, 4)
+        else:
+            if abs(self.player.dx) >= 1:
+                # 走っている場合
+                w = 18 if self.player.direction > 0 else -18
+                x = self.player.x if self.player.direction > 0 else self.player.x-2
+                u = pyxel.frame_count // 3 % 2
+                u = 48 + (24 * u)
+                # 48, 72
+                pyxel.blt(x, self.player.y, 0, u, 16, w, 16, 4)
+            else:
+                # 止まっている場合
+                w = 16 if self.player.direction > 0 else -16
+                # 画像の参照X座標を決める
+                i = [0, 1, 2, 1]
+                u = pyxel.frame_count // 4 % 4
+                u = i[u] * 16
+                pyxel.blt(self.player.x, self.player.y, 0, u, 16, w, 16, 4)
             

@@ -99,18 +99,9 @@ class Player:
         # self.conditions[i].update()
 
         # 行動の反映
-        # self.x = max(0, self.x + self.dx)
-                # 押し戻し処理
+        # 押し戻し処理
         self.x, self.y = push_back(self.x, self.y, self.dx, self.dy)
 
-        # self.x += self.dx
-        # self.y += self.dy
-        
-        # self.scene.scroll_x = max(0, self.scene.scroll_x + self.dx)
-        # self.scene.scroll_y -= self.dy
-
-        # self.dx = 0
-        # self.dy = 0
         self.update_effect()
 
         if pyxel.btn(pyxel.KEY_0):
@@ -161,9 +152,11 @@ class Player:
             # pyxel.rect(self.x, self.y, 16, 16, 7)
 
 
-        pyxel.text(self.x, self.y-50,f"in_collision: {in_collision(self.x, self.y+16)}",0)
+        # pyxel.text(self.x, self.y-50,f"in_collision: {in_collision(self.x, self.y+16)}",0)
+        pyxel.text(self.x, self.y-50,f"get_tile: {get_tile_type(self.x, self.y)}",0)
         pyxel.text(self.x, self.y-40,f"is_wall_ahead: {is_wall_ahead(self.x, self.y, self.direction)}",0)
-        pyxel.text(self.x, self.y-30,f"is_on_ground: {is_on_ground(self.x, self.y)}",0)
+        # pyxel.text(self.x, self.y-30,f"is_on_ground: {is_on_ground(self.x, self.y)}",0)
+        pyxel.text(self.x, self.y-30,f"enemies cnt: {len(self.scene.enemies)}",0)
         pyxel.text(self.x, self.y-20,f"dx: {self.dx}, dy: {self.dy}",0)
         pyxel.text(self.x, self.y-10,f"x: {self.x}, y: {self.y}",0)
         # pyxel.rectb(self.x, self.y, 16, 16, 10)
